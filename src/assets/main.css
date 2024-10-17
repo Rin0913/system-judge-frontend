@@ -1,0 +1,79 @@
+@import "./base.css";
+
+body {
+  color: white;
+  font-family: "Fira Code", monospace;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  z-index: 1;
+}
+
+.dark {
+  background-color: #373737;
+  padding: 2em;
+}
+
+.light {
+  background-color: #636363;
+  padding: 2em;
+}
+
+.sidebar {
+  z-index: 0;
+}
+
+.triangle {
+  position: fixed;
+  width: 0;
+  height: 0;
+  border-style: solid;
+}
+
+.dark-tri1 {
+  background-color: transparent transparent #555 transparent;
+  border-left: 100px solid transparent;
+  border-bottom: 100px solid #373737;
+  bottom: 0;
+  right: 0;
+}
+
+.dark-tri2 {
+  background-color: transparent transparent #555 transparent;
+  border-left: 80px solid transparent;
+  border-bottom: 80px solid #373737;
+  bottom: 0;
+  right: 0;
+}
+
+.dark-tri3 {
+  background-color: transparent transparent #555 transparent;
+  border-left: 60px solid transparent;
+  border-bottom: 60px solid #373737;
+  bottom: 0;
+  right: 0;
+}
+
+.light-tri1 {
+  background-color: transparent transparent #555 transparent;
+  border-left: 100px solid transparent;
+  border-bottom: 100px solid #636363;
+  bottom: 0;
+  right: 0;
+}
+
+.light-tri2 {
+  background-color: transparent transparent #555 transparent;
+  border-left: 80px solid transparent;
+  border-bottom: 80px solid #636363;
+  bottom: 0;
+  right: 0;
+}
+
+.light-tri3 {
+  background-color: transparent transparent #555 transparent;
+  border-left: 60px solid transparent;
+  border-bottom: 60px solid #636363;
+  bottom: 0;
+  right: 0;
+}

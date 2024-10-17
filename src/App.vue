@@ -1,0 +1,83 @@
+<script setup>
+import { RouterLink, RouterView } from "vue-router";
+</script>
+
+<template>
+  <div class="max-sm:hidden">
+    <div
+      class="dark sidebar fixed w-1/3 lg:w-1/5 float-left min-h-[calc(100dvh)]"
+    >
+      <MenuComponent :isLogged="isLogged" :username="username" />
+    </div>
+    <div class="light w-2/3 lg:w-4/5 float-right min-h-[calc(100dvh)]">
+      <RouterView />
+    </div>
+  </div>
+  <div class="sm:hidden">
+    <div class="dark min-h-[calc(100dvh)]" v-if="!show">
+      <MenuComponent :isLogged="isLogged" :username="username" />
+      <div @click="turn_page">
+        <div class="triangle light-tri1"></div>
+        <div class="triangle dark-tri2"></div>
+        <div class="triangle light-tri3"></div>
+      </div>
+    </div>
+    <div class="light min-h-[calc(100dvh)] min-w-[calc(100dvw)]" v-if="show">
+      <RouterView />
+      <div @click="turn_page">
+        <div class="triangle dark-tri1"></div>
+        <div class="triangle light-tri2"></div>
+        <div class="triangle dark-tri3"></div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import Cookies from "js-cookie";
+import MenuComponent from "./components/MenuComponent.vue";
+
+function parseJwt(token) {
+  const base64Url = token.split(".")[1];
+  const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+  const jsonPayload = decodeURIComponent(
+    atob(base64)
+      .split("")
+      .map(function (c) {
+        return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+      })
+      .join(""),
+  );
+
+  return JSON.parse(jsonPayload);
+}
+
+export default {
+  components: {
+    MenuComponent,
+  },
+  data() {
+    return {
+      show: 1,
+      isLogged: 0,
+      username: "Anonymous",
+    };
+  },
+  mounted() {
+    this.checkLogged();
+  },
+  methods: {
+    turn_page() {
+      this.show = (this.show + 1) % 2;
+      console.log(this.show);
+    },
+    async checkLogged() {
+      const token = Cookies.get("token");
+      if (token) {
+        this.isLogged = 1;
+        this.username = parseJwt(token).uid;
+      }
+    },
+  },
+};
+</script>
