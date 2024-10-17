@@ -7,12 +7,14 @@
       v-html="description"
     ></div>
     <hr />
+    <p class="float-left">{{ submitMessage }}</p>
     <a
       href="#"
       @click="submit"
       class="button hover:bg-white hover:text-gray-900 float-right mt-2 font-semibold py-2 px-4 border rounded"
       >Submit</a
     >
+    <div style="clear: both"></div>
   </div>
 </template>
 
@@ -29,6 +31,7 @@ export default {
   data() {
     return {
       message: "Fetching.",
+      submitMessage: "",
       ready: 0,
       data: {},
       description: "",
@@ -38,6 +41,34 @@ export default {
     this.fetchProblem();
   },
   methods: {
+    submit() {
+      const token = Cookies.get("token");
+      const id = this.$route.query.id;
+      let api = new URL(`submit/${id}`, baseAPI).toString();
+
+      axios
+        .post(
+          api,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        )
+        .then((response) => {
+          window.location.href = "/submissions";
+        })
+        .catch((error) => {
+          this.ready = 0;
+          if (error.response && error.response.status == 401) {
+            Cookies.remove("token");
+            window.location.href = "/login";
+          } else
+            this.submitMessage =
+              "Unable to fetch user data from the server side.";
+        });
+    },
     async fetchProblem() {
       const id = this.$route.query.id;
       if (!id) window.location.href = "/problems";
