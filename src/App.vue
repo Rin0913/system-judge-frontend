@@ -7,7 +7,11 @@ import { RouterLink, RouterView } from "vue-router";
     <div
       class="dark sidebar fixed w-1/3 lg:w-1/5 float-left min-h-[calc(100dvh)]"
     >
-      <MenuComponent :isLogged="isLogged" :username="username" />
+      <MenuComponent
+        :isLogged="isLogged"
+        :username="username"
+        :isAdmin="isAdmin"
+      />
     </div>
     <div class="light w-2/3 lg:w-4/5 float-right min-h-[calc(100dvh)]">
       <RouterView />
@@ -15,7 +19,11 @@ import { RouterLink, RouterView } from "vue-router";
   </div>
   <div class="sm:hidden">
     <div class="dark min-h-[calc(100dvh)]" v-if="!show">
-      <MenuComponent :isLogged="isLogged" :username="username" />
+      <MenuComponent
+        :isLogged="isLogged"
+        :username="username"
+        :isAdmin="isAdmin"
+      />
       <div @click="turn_page">
         <div class="triangle light-tri1"></div>
         <div class="triangle dark-tri2"></div>
@@ -24,6 +32,7 @@ import { RouterLink, RouterView } from "vue-router";
     </div>
     <div class="light min-h-[calc(100dvh)] min-w-[calc(100dvw)]" v-if="show">
       <RouterView />
+      <div class="h-[100px]"></div>
       <div @click="turn_page">
         <div class="triangle dark-tri1"></div>
         <div class="triangle light-tri2"></div>
@@ -61,6 +70,7 @@ export default {
       show: 1,
       isLogged: 0,
       username: "Anonymous",
+      isAdmin: 0,
     };
   },
   mounted() {
@@ -75,7 +85,9 @@ export default {
       const token = Cookies.get("token");
       if (token) {
         this.isLogged = 1;
-        this.username = parseJwt(token).uid;
+        let payload = parseJwt(token);
+        this.username = payload.uid;
+        this.isAdmin = payload.role == "admin";
       }
     },
   },

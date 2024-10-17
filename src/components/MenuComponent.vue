@@ -16,23 +16,35 @@
     </ul>
   </div>
   <br />
-  <p class="text-2xl"><a href="/problems">Problems</a></p>
-  <ul
-    class="max-w-md space-y-1 list-disc list-inside"
-    v-for="problem in problems"
-  >
-    <li>
-      <a :href="`/problem?id=${problem._id}`">
-        {{ problem["problem_name"] }}
-      </a>
-    </li>
-  </ul>
+  <div>
+    <p class="text-2xl"><a href="/problems">Problems</a></p>
+    <ul
+      class="max-w-md space-y-1 list-disc list-inside"
+      v-for="problem in problems"
+    >
+      <li>
+        <a :href="`/problem?id=${problem._id}`">
+          {{ problem["problem_name"] }}
+        </a>
+      </li>
+    </ul>
+  </div>
   <br />
-  <p class="text-2xl">Courses</p>
-  <ul class="max-w-md space-y-1 list-disc list-inside">
-    <li>Index</li>
-    <li>Course Materials</li>
-  </ul>
+  <div>
+    <p class="text-2xl">Courses</p>
+    <ul class="max-w-md space-y-1 list-disc list-inside">
+      <li>Index</li>
+      <li>Course Materials</li>
+    </ul>
+  </div>
+  <div v-if="isAdmin">
+    <br />
+    <p class="text-2xl">Administrator</p>
+    <ul class="max-w-md space-y-1 list-disc list-inside">
+      <li><a href="/admin/problems">Problems Manager</a></li>
+      <li>Grades Manager</li>
+    </ul>
+  </div>
 </template>
 
 <script>
@@ -47,8 +59,13 @@ export default {
     username: {
       type: String,
       default: "Anonymous",
+      isAdmin: 0,
     },
     isLogged: {
+      type: Number,
+      default: 0,
+    },
+    isAdmin: {
       type: Number,
       default: 0,
     },

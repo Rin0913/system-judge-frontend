@@ -4,7 +4,6 @@
     <table class="min-w-full text-sm md:text-lg text-center border">
       <thead class="text-lg md:text-xl border">
         <tr>
-          <th scope="col">Submission ID</th>
           <th scope="col">Problem ID</th>
           <th scope="col">Score</th>
           <th scope="col">Status</th>
@@ -14,9 +13,6 @@
       </thead>
       <tbody v-for="s in data.slice().reverse()" :key="s['_id']">
         <tr class="border">
-          <th scope="row" class="">
-            {{ s["_id"] }}
-          </th>
           <td class="">{{ s["problem_id"] }}</td>
           <td class="">{{ s["point"] }}</td>
           <td class="">{{ s["status"] }}</td>
@@ -33,8 +29,10 @@
     <hr />
     <div v-for="s in data.slice().reverse()" :key="s['_id']">
       <p>
-        <a :href="'/submission?id=' + s['_id']">View Details</a> for problem
-        {{ s["problem_id"] }} at {{ convert_time(s["creation_time"]) }}.
+        <a :href="'/submission?id=' + s['_id']"
+          >View Details for problem {{ s["problem_id"] }} at
+          {{ s["creation_time"] }}: {{ s["point"] }}pt.
+        </a>
       </p>
       <hr />
     </div>
@@ -62,7 +60,7 @@ export default {
   methods: {
     convert_time(datetime) {
       return new Date(datetime + " UTC")
-        .toLocaleString("en-CA", { hour12: false })
+        .toLocaleString("zh-TW", { hour12: false })
         .replace(",", "");
     },
     fetchUserSubmissions() {

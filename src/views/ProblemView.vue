@@ -66,15 +66,16 @@ export default {
             window.location.href = "/login";
           } else
             this.submitMessage =
-              "Unable to fetch user data from the server side.";
+              "Unable to submit a test request to the server side.";
         });
     },
     async fetchProblem() {
+      const token = Cookies.get("token");
       const id = this.$route.query.id;
       if (!id) window.location.href = "/problems";
       let api = new URL(`problems/${id}`, baseAPI).toString();
       axios
-        .get(api)
+        .get(api, { headers: { Authorization: `Bearer ${token}` } })
         .then((response) => {
           this.message = "";
           this.data = response.data;
@@ -85,7 +86,7 @@ export default {
         .catch((error) => {
           this.ready = 0;
           console.log(error);
-          this.message = "Unable to fetch user data from the server side.";
+          this.message = "Unable to fetch problem data from the server side.";
         });
     },
     async process(data) {

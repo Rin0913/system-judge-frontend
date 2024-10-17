@@ -56,7 +56,7 @@ export default {
   methods: {
     convert_time(datetime) {
       return new Date(datetime + " UTC")
-        .toLocaleString("en-CA", { hour12: false })
+        .toLocaleString("zh-TW", { hour12: false })
         .replace(",", "");
     },
     fetchProblems() {
