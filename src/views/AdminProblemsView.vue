@@ -9,13 +9,13 @@
           <th scope="col"></th>
         </tr>
       </thead>
-      <tbody v-for="p in data.slice().reverse()">
-        <tr class="border">
+      <tbody v-for="p in data.slice().reverse()" class="border">
+        <tr>
           <td class="max-sm:hidden px-6 py-4">{{ p["_id"] }}</td>
           <td class="px-6 py-4">{{ p["problem_name"] }}</td>
           <td class="py-4">
             <a :href="`/admin/problem?id=${p._id}`">Edit</a>
-            <a :href="`/problem?id=${p._id}`" class="px-6">View</a>
+            <a :href="`/problem?id=${p._id}`" class="px-4">View</a>
             <a href="#" @click="deleteProblem(p._id)">Delete</a>
           </td>
         </tr>

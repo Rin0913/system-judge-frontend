@@ -80,7 +80,6 @@ export default {
           this.message = "";
           this.data = response.data;
           this.ready = 1;
-          console.log(this.data);
           this.process(response.data);
         })
         .catch((error) => {
@@ -91,7 +90,6 @@ export default {
     },
     async process(data) {
       this.description = md.render(this.data["description"]);
-      console.log(this.description);
     },
   },
 };

@@ -18,7 +18,7 @@ import { RouterLink, RouterView } from "vue-router";
     </div>
   </div>
   <div class="sm:hidden">
-    <div class="dark min-h-[calc(100dvh)]" v-if="!show">
+    <div class="dark fixed w-full min-h-[calc(100dvh)]" v-if="!show">
       <MenuComponent
         :isLogged="isLogged"
         :username="username"
@@ -74,6 +74,7 @@ export default {
     };
   },
   mounted() {
+    if(window.location.pathname === '/') this.show = 0;
     this.checkLogged();
   },
   methods: {
