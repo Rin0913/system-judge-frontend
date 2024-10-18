@@ -98,8 +98,11 @@ export default {
     },
 
     fetchProblems() {
+      const token = Cookies.get("token");
       axios
-        .get(fetchProblemsAPI)
+        .get(fetchProblemsAPI, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
         .then((response) => {
           this.message = "";
           this.data = response.data;

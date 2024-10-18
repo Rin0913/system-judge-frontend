@@ -29,6 +29,23 @@
     ></textarea>
   </p>
   <br />
+
+  <label class="inline-flex items-center me-5 cursor-pointer">
+    Allow New Submission:
+    <input
+      type="checkbox"
+      v-model="allow_submission"
+      class="sr-only peer"
+      checked
+    />
+    <div
+      class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-teal-300 dark:peer-focus:ring-teal-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-teal-600"
+    ></div>
+  </label>
+
+  <br />
+
+  <br />
   <hr />
   <br />
   <textarea-list
@@ -77,6 +94,7 @@ export default {
     return {
       data: null,
       problem_name: "",
+      allow_submission: true,
       deadline: null,
       description: "",
       subtasks: [],
@@ -97,7 +115,7 @@ export default {
       const localDate = new Date(datetime);
 
       const year = localDate.getUTCFullYear();
-      const month = String(localDate.getUTCMonth() + 1).padStart(2, "0"); // 月份是從0開始的，所以需要加1
+      const month = String(localDate.getUTCMonth() + 1).padStart(2, "0");
       const day = String(localDate.getUTCDate()).padStart(2, "0");
       const hours = String(localDate.getUTCHours()).padStart(2, "0");
       const minutes = String(localDate.getUTCMinutes()).padStart(2, "0");
@@ -121,6 +139,7 @@ export default {
           this.problem_name = this.data.problem_name;
           this.deadline = this.convert_time(this.data.deadline);
           this.description = this.data.description;
+          this.allow_submission = this.data.allow_submission;
           this.data.subtasks.forEach((s) => {
             this.subtasks = response.data.subtasks.map((s) => ({
               value: s.script,
@@ -149,6 +168,7 @@ export default {
       problem_data.description = this.description;
       problem_data.subtasks = [];
       problem_data.playbooks = [];
+      problem_data.allow_submission = this.allow_submission;
       const subtasks = this.$refs.SubtaskList.getValues();
       const playbooks = this.$refs.PlaybookList.getValues();
       subtasks.forEach((s) => {
