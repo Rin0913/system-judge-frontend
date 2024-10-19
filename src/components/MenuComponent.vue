@@ -42,7 +42,7 @@
     <p class="text-2xl">Administrator</p>
     <ul class="max-w-md space-y-1 list-disc list-inside">
       <li><a href="/admin/problems">Problems Manager</a></li>
-      <li>Grades Manager</li>
+      <li><a href="/admin/grades">Grades Manager</a></li>
     </ul>
   </div>
 </template>

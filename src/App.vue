@@ -74,7 +74,7 @@ export default {
     };
   },
   mounted() {
-    if(window.location.pathname === '/') this.show = 0;
+    if (window.location.pathname === "/") this.show = 0;
     this.checkLogged();
   },
   methods: {
