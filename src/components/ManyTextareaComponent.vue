@@ -1,14 +1,5 @@
 <template>
   <div>
-    <div>
-      <a
-        href="#"
-        @click="addTextarea"
-        class="button hover:bg-white hover:text-gray-900 mt-5 font-semibold py-2 px-4 border rounded"
-        >{{ buttonWord }}</a
-      >
-    </div>
-    <br />
     <div v-for="(input, index) in inputs" :key="index">
       <p>
         Name:
@@ -45,6 +36,15 @@
       <button class="float-right" @click="removeTextarea(index)">Remove</button>
       <div style="clear: both"></div>
     </div>
+  </div>
+  <br />
+  <div>
+    <a
+      href="#"
+      @click="addTextarea"
+      class="button hover:bg-white hover:text-gray-900 mt-5 font-semibold py-2 px-4 border rounded"
+      >{{ buttonWord }}</a
+    >
   </div>
 </template>
 
