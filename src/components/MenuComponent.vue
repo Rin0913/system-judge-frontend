@@ -33,8 +33,12 @@
   <div>
     <p class="text-2xl">Courses</p>
     <ul class="max-w-md space-y-1 list-disc list-inside">
-      <li>Index</li>
-      <li>Course Materials</li>
+      <li><a href="/">Index</a></li>
+      <li>
+        <a href="https://nasa.cs.nycu.edu.tw" target="_blank"
+          >Course Materials</a
+        >
+      </li>
     </ul>
   </div>
   <div v-if="isAdmin">

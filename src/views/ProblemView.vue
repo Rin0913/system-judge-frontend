@@ -4,10 +4,18 @@
     <div
       class="description"
       id="problem-description"
-      v-html="description"
+      v-html="collapsedDescription"
     ></div>
+    <br />
     <hr />
     <p class="float-left">{{ submitMessage }}</p>
+    <a
+      href="#"
+      @click="collapse"
+      v-if="description.split('\n').length >= 10"
+      class="button hover:bg-white hover:text-gray-900 float-left mt-2 font-semibold py-2 px-4 border rounded"
+      >Collapse</a
+    >
     <a
       href="#"
       @click="submit"
@@ -22,8 +30,7 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 
-import markdownit from "markdown-it";
-const md = markdownit();
+import { marked } from "marked";
 
 const baseAPI = import.meta.env.VITE_API_BASE_URL;
 
@@ -35,6 +42,8 @@ export default {
       ready: 0,
       data: {},
       description: "",
+      parsedDescription: "",
+      collapsedDescription: "",
     };
   },
   mounted() {
@@ -69,7 +78,13 @@ export default {
               "Unable to submit a test request to the server side.";
         });
     },
-    async fetchProblem() {
+    collapse() {
+      [this.parsedDescription, this.collapsedDescription] = [
+        this.collapsedDescription,
+        this.parsedDescription,
+      ];
+    },
+    fetchProblem() {
       const token = Cookies.get("token");
       const id = this.$route.query.id;
       if (!id) window.location.href = "/problems";
@@ -80,7 +95,11 @@ export default {
           this.message = "";
           this.data = response.data;
           this.ready = 1;
-          this.process(response.data);
+          this.description = this.data["description"];
+          this.parsedDescription = marked.parse(this.description);
+          this.collapsedDescription = marked.parse(
+            this.description.split("\n").slice(0, 10).join("\n"),
+          );
         })
         .catch((error) => {
           this.ready = 0;
@@ -88,55 +107,60 @@ export default {
           this.message = "Unable to fetch problem data from the server side.";
         });
     },
-    async process(data) {
-      this.description = md.render(this.data["description"]);
-    },
+    async process(data) {},
   },
 };
 </script>
 
 <style>
-.light {
+.description {
   font-size: 1rem;
 }
-h1 {
+
+.description h1 {
   font-size: 3.5rem;
 }
 
-h2 {
+.description h2 {
   font-size: 2.7rem;
 }
 
-h3 {
+.description h3 {
   font-size: 2.2rem;
 }
 
-h4 {
+.description h4 {
   font-size: 1.9rem;
 }
 
-h5 {
+.description h5 {
   font-size: 1.7rem;
 }
 
-h6 {
+.description h6 {
   font-size: 1.5rem;
 }
 
-img {
+.description img {
   margin-top: 1em;
   margin-bottom: 1em;
   display: block;
-  margin: 0 auto;
+  margin-left: auto;
+  margin-right: auto;
   width: 100%;
+  text-align: center;
 }
 
-@media (min-width: 768px) {
-  img {
+@media (min-width: 1024px) {
+  .description img {
     width: 50%;
   }
 }
 
+.description p {
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+}
 .description ul {
   list-style-type: disc;
   padding-left: 20px;
