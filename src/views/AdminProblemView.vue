@@ -70,8 +70,14 @@
   <a
     href="#"
     @click="submit"
-    class="button hover:bg-white hover:text-gray-900 float-right mt-2 font-semibold py-2 px-4 border rounded"
+    class="button hover:bg-white hover:text-gray-900 float-right ml-2 mt-2 font-semibold py-2 px-4 border rounded"
     >Submit</a
+  >
+  <a
+    href="#"
+    @click="upload"
+    class="button hover:bg-white hover:text-gray-900 float-right mt-2 font-semibold py-2 px-4 border rounded"
+    >Upload</a
   >
   <div style="clear: both"></div>
 </template>
@@ -175,7 +181,7 @@ export default {
         problem_data.subtasks.push({
           task_name: s.name,
           script: s.value,
-          depend_on: s.dependencies
+          depends_on: s.dependencies
             .split(",")
             .map((item) => item.trim())
             .filter((item) => item !== ""),
@@ -188,8 +194,29 @@ export default {
           script: s.value,
         });
       });
-      console.log(problem_data);
+      this.modifyProblem(problem_data);
+    },
+    upload() {
+      const fileInput = document.createElement("input");
+      fileInput.type = "file";
+      fileInput.style.display = "none";
 
+      fileInput.addEventListener("change", (event) => {
+        const file = fileInput.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            const fileContent = event.target.result;
+            this.modifyProblem(JSON.parse(fileContent));
+            document.body.removeChild(fileInput);
+          };
+          reader.readAsText(file);
+        }
+      });
+      document.body.appendChild(fileInput);
+      fileInput.click();
+    },
+    modifyProblem(problem_data) {
       const token = Cookies.get("token");
       const id = this.$route.query.id;
       if (!id) window.location.href = "/admin/problems";
@@ -214,8 +241,6 @@ export default {
           else
             this.message =
               "Unable to submit. Please press F12 to get detailed information.";
-
-          console.log(this.message);
         });
     },
   },

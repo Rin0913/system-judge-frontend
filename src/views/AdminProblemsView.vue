@@ -14,8 +14,11 @@
           <td class="max-sm:hidden px-6 py-4">{{ p["_id"] }}</td>
           <td class="px-6 py-4">{{ p["problem_name"] }}</td>
           <td class="py-4">
-            <a :href="`/admin/problem?id=${p._id}`">Edit</a>
-            <a :href="`/problem?id=${p._id}`" class="px-4">View</a>
+            <a :href="`/admin/problem?id=${p._id}`" class="pr-4">Edit</a>
+            <a :href="`/problem?id=${p._id}`" class="pr-4">View</a>
+            <a href="#" @click="downloadProblem(p._id)" class="pr-4"
+              >Download</a
+            >
             <a href="#" @click="deleteProblem(p._id)">Delete</a>
           </td>
         </tr>
@@ -96,7 +99,39 @@ export default {
           this.operationMessage = "Unable to delete the problem.";
         });
     },
+    downloadProblem(problem_id) {
+      const token = Cookies.get("token");
+      const fetchProblemAPI = new URL(
+        `problems/${problem_id}`,
+        baseAPI,
+      ).toString();
+      axios
+        .get(fetchProblemAPI, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((response) => {
+          const blob = new Blob([JSON.stringify(response.data)], {
+            type: "application/json",
+          });
 
+          const link = document.createElement("a");
+
+          const url = URL.createObjectURL(blob);
+          link.href = url;
+          link.setAttribute("download", `problem_${problem_id}_raw.json`);
+
+          document.body.appendChild(link);
+          link.click();
+
+          document.body.removeChild(link);
+          URL.revokeObjectURL(url);
+        })
+        .catch((error) => {
+          console.log(error);
+          this.operationMessage =
+            "Unable to fetch problem data from the server side.";
+        });
+    },
     fetchProblems() {
       const token = Cookies.get("token");
       axios
@@ -111,7 +146,7 @@ export default {
         })
         .catch((error) => {
           this.ready = 0;
-          this.message = "Unable to fetch user data from the server side.";
+          this.message = "Unable to fetch problem data from the server side.";
         });
     },
   },
