@@ -19,8 +19,15 @@
     <a
       href="#"
       @click="submit"
+      v-if="cooldown <= 0"
       class="button hover:bg-white hover:text-gray-900 float-right mt-2 font-semibold py-2 px-4 border rounded"
       >Submit</a
+    >
+    <a
+      href="#"
+      v-if="cooldown > 0"
+      class="button float-right mt-2 font-semibold py-2 px-4 border rounded"
+      >{{ cooldown }}</a
     >
     <div style="clear: both"></div>
   </div>
@@ -44,6 +51,7 @@ export default {
       description: "",
       parsedDescription: "",
       collapsedDescription: "",
+      cooldown: 0,
     };
   },
   mounted() {
@@ -69,13 +77,12 @@ export default {
           window.location.href = "/submissions";
         })
         .catch((error) => {
-          this.ready = 0;
           if (error.response && error.response.status == 401) {
             Cookies.remove("token");
             window.location.href = "/login";
           } else
             this.submitMessage =
-              "Unable to submit a test request to the server side.";
+              "Unable to submit a test request to the server side. Maybe still in the cooldown time?";
         });
     },
     collapse() {
@@ -100,6 +107,12 @@ export default {
           this.collapsedDescription = marked.parse(
             this.description.split("\n").slice(0, 10).join("\n"),
           );
+          if (response.data.hasOwnProperty("cooldown")) {
+            this.cooldown = response.data["cooldown"];
+            setInterval(() => {
+              this.cooldown -= 1;
+            }, 1000);
+          }
         })
         .catch((error) => {
           this.ready = 0;

@@ -32,6 +32,7 @@
 
   <label class="inline-flex items-center me-5 cursor-pointer">
     Allow New Submission:
+    <span class="px-2"></span>
     <input
       type="checkbox"
       v-model="allow_submission"
@@ -42,7 +43,21 @@
       class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-teal-300 dark:peer-focus:ring-teal-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-teal-600"
     ></div>
   </label>
-
+  <br />
+  <p>
+    Submission Cooldown Time in Minutes (Min/Max):
+    <input
+      v-model="min_c"
+      id="message"
+      class="p-2.5 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-5"
+    />
+    <span class="px-2"></span>
+    <input
+      v-model="max_c"
+      id="message"
+      class="p-2.5 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-5"
+    />
+  </p>
   <br />
 
   <br />
@@ -106,6 +121,8 @@ export default {
       subtasks: [],
       playbooks: [],
       message: "",
+      min_c: 0,
+      max_c: 10,
     };
   },
   methods: {
@@ -146,6 +163,8 @@ export default {
           this.deadline = this.convert_time(this.data.deadline);
           this.description = this.data.description;
           this.allow_submission = this.data.allow_submission;
+          this.max_c = this.data.max_cooldown_time;
+          this.min_c = this.data.min_cooldown_time;
           this.data.subtasks.forEach((s) => {
             this.subtasks = response.data.subtasks.map((s) => ({
               value: s.script,
@@ -175,6 +194,8 @@ export default {
       problem_data.subtasks = [];
       problem_data.playbooks = [];
       problem_data.allow_submission = this.allow_submission;
+      problem_data.max_cooldown_time = Number(this.max_c);
+      problem_data.min_cooldown_time = Number(this.min_c);
       const subtasks = this.$refs.SubtaskList.getValues();
       const playbooks = this.$refs.PlaybookList.getValues();
       subtasks.forEach((s) => {
@@ -185,7 +206,7 @@ export default {
             .split(",")
             .map((item) => item.trim())
             .filter((item) => item !== ""),
-          point: s.point,
+          point: Number(s.point),
         });
       });
       playbooks.forEach((s) => {
