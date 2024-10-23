@@ -178,4 +178,8 @@ export default {
   list-style-type: disc;
   padding-left: 20px;
 }
+.description ol {
+  list-style-type: decimal;
+  padding-left: 40px;
+}
 </style>
