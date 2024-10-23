@@ -168,7 +168,7 @@ export default {
           this.data.subtasks.forEach((s) => {
             this.subtasks = response.data.subtasks.map((s) => ({
               value: s.script,
-              dependencies: s.depends_on.join(" "),
+              dependencies: s.depends_on.join(", "),
               name: s.task_name,
               point: s.point,
             }));
