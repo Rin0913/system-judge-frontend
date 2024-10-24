@@ -56,7 +56,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 
 const baseAPI = import.meta.env.VITE_API_BASE_URL;
-const listProblemAPI = new URL("problems", baseAPI).toString();
+const listProblemAPI = new URL("problems/", baseAPI).toString();
 
 export default {
   props: {
