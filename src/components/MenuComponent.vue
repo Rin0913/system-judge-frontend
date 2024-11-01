@@ -35,9 +35,7 @@
     <ul class="max-w-md space-y-1 list-disc list-inside">
       <li><a href="/">Index</a></li>
       <li>
-        <a href="https://nasa.cs.nycu.edu.tw" target="_blank"
-          >Course Materials</a
-        >
+        <a :href="courseUrl" target="_blank">Course Materials</a>
       </li>
     </ul>
   </div>
@@ -77,6 +75,7 @@ export default {
   data() {
     return {
       problems: [],
+      courseUrl: import.meta.env.VITE_COURSE_WEBSITE,
     };
   },
   mounted() {
