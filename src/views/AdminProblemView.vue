@@ -75,7 +75,7 @@
   <textarea-list
     ref="PlaybookList"
     :data="playbooks"
-    :buttonWord="'Add Playbook'"
+    :buttonWord="'Add File'"
   ></textarea-list>
 
   <br />
