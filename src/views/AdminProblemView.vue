@@ -59,7 +59,18 @@
     />
   </p>
   <br />
-
+  <br />
+  <hr />
+  <br />
+  <p>
+    Multi-Stage Dockerfile:
+    <textarea
+      v-model="dockerfile"
+      id="message"
+      rows="4"
+      class="block mt-3 p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-5"
+    ></textarea>
+  </p>
   <br />
   <hr />
   <br />
@@ -115,6 +126,7 @@ export default {
     return {
       data: null,
       problem_name: "",
+      dockerfile: "",
       allow_submission: true,
       deadline: null,
       description: "",
@@ -159,9 +171,11 @@ export default {
         .then((response) => {
           this.data = response.data;
           console.log(this.data);
+          console.log(this.data);
           this.problem_name = this.data.problem_name;
           this.deadline = this.convert_time(this.data.deadline);
           this.description = this.data.description;
+          this.dockerfile = this.data.dockerfile;
           this.allow_submission = this.data.allow_submission;
           this.max_c = this.data.max_cooldown_time;
           this.min_c = this.data.min_cooldown_time;
@@ -191,6 +205,7 @@ export default {
       problem_data.problem_name = this.problem_name;
       problem_data.deadline = this.convert_time_to_utc(this.deadline);
       problem_data.description = this.description;
+      problem_data.dockerfile = this.dockerfile;
       problem_data.subtasks = [];
       problem_data.playbooks = [];
       problem_data.allow_submission = this.allow_submission;
@@ -215,6 +230,7 @@ export default {
           script: s.value,
         });
       });
+      console.log(problem_data);
       this.modifyProblem(problem_data);
     },
     upload() {
@@ -247,7 +263,7 @@ export default {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((response) => {
-          location.reload();
+          /* location.reload(); */
         })
         .catch((error) => {
           console.log(error);
