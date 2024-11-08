@@ -263,7 +263,7 @@ export default {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((response) => {
-          /* location.reload(); */
+          location.reload();
         })
         .catch((error) => {
           console.log(error);
