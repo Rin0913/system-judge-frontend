@@ -14,7 +14,10 @@
           <td class="max-sm:hidden px-6 py-4">{{ p["_id"] }}</td>
           <td class="px-6 py-4">{{ p["problem_name"] }}</td>
           <td class="py-4">
-            <a href="#" @click="fetch_grades(p._id)">JSON</a>
+            <a href="#" @click="fetch_grades(p._id, 'json')" class="px-2"
+              >JSON</a
+            >
+            <a href="#" @click="fetch_grades(p._id, 'csv')" class="px-2">CSV</a>
           </td>
         </tr>
       </tbody>
@@ -62,10 +65,10 @@ export default {
           this.message = "Unable to fetch user data from the server side.";
         });
     },
-    fetch_grades(problem_id) {
+    fetch_grades(problem_id, type) {
       const token = Cookies.get("token");
       const fetchGradesAPI = new URL(
-        `grades/problems/${problem_id}`,
+        `grades/problems/${problem_id}?type=${type}`,
         baseAPI,
       ).toString();
       axios
@@ -73,15 +76,22 @@ export default {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((response) => {
-          const blob = new Blob([JSON.stringify(response.data)], {
-            type: "application/json",
-          });
+          var blob = null;
+
+          if (type == "json")
+            blob = new Blob([JSON.stringify(response.data)], {
+              type: "text/plain",
+            });
+          else
+            blob = new Blob([response.data], {
+              type: "text/plain",
+            });
 
           const link = document.createElement("a");
 
           const url = URL.createObjectURL(blob);
           link.href = url;
-          link.setAttribute("download", `problem_${problem_id}_grades.json`);
+          link.setAttribute("download", `problem_${problem_id}_grades.${type}`);
 
           document.body.appendChild(link);
           link.click();
