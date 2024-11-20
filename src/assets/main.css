@@ -10,6 +10,11 @@ body {
   z-index: 1;
 }
 
+pre {
+  background-color: #777777;
+  padding: 8px;
+}
+
 .dark {
   background-color: #373737;
   padding: 2em;
